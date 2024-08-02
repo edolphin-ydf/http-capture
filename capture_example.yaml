@@ -1,0 +1,29 @@
+- Path: /account/third_account/auth
+  Operator: "contains"
+  Method: "POST"
+  Source: "response.body"
+  Capture: 
+    - Field: "data.data.access_token.token"
+      MapKey: "Authorization"
+      MapValue: 'return "Bearer " .. value'
+    - Field: "data.data.access_token.expire_at"
+      MapKey: "AuthorizationExpireAt"
+    - Field: "data.data.refresh_token.token"
+      MapKey: "RefreshToken"
+    - Field: "data.data.refresh_token.expire_at"
+      MapKey: "RefreshTokenExpireAt"
+- Path: /some/api/path
+  Operator: "contains"
+  Method: "GET"
+  Source: "request.header"
+  Capture:
+    - Field: "Authorization"
+      MapKey: "MultiToken"
+- Path: /
+  Host: "your host"
+  Operator: "contains"
+  Method: "GET"
+  Source: "request.header"
+  Capture:
+    - Field: "Cookie"
+      MapKey: "rancher.cookie"
